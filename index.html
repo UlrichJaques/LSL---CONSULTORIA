@@ -43,10 +43,16 @@
         p { max-width: 45ch; color: #555; }
         a { color: var(--color-primary); text-decoration: none; }
         .btn { display: inline-block; padding: 14px 28px; border-radius: 4px; font-weight: 700; font-size: 0.9rem; border: 2px solid var(--color-accent); cursor: pointer; transition: all 0.4s ease; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-large {
+            padding: 12px 40px;
+        }
         .btn-primary { background-color: var(--color-accent); color: white; border-color: var(--color-accent); }
         .btn-primary:hover { background-color: transparent; color: var(--color-accent); }
         .btn-secondary { background-color: transparent; color: var(--color-accent); border-color: var(--color-accent); }
         .btn-secondary:hover { background-color: var(--color-accent); color: white; }
+        
+        .text-accent { color: var(--color-accent); }
+
         .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .section-intro { text-align: center; max-width: 700px; margin: 0 auto 5rem auto; }
@@ -57,6 +63,7 @@
             margin-right: auto;
         }
         section { padding: 10rem 0; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
 
         /* --- MENÚ DE NAVEGACIÓN FIJO --- */
         .navbar {
@@ -70,11 +77,10 @@
             padding: 1rem 5%;
             z-index: 1000;
             transition: background-color 0.4s ease, box-shadow 0.4s ease;
-            background-color: rgba(249, 248, 246, 0.8);
-            backdrop-filter: blur(5px);
         }
         .navbar.scrolled {
-            background-color: #fff;
+            background-color: rgba(249, 248, 246, 0.8);
+            backdrop-filter: blur(5px);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .nav-logo { font-weight: 800; font-size: 1.2rem; text-transform: uppercase; color: var(--color-primary);}
@@ -83,416 +89,334 @@
         .nav-links a { font-weight: 500; font-size: 0.9rem; color: var(--color-primary); transition: color 0.3s ease;}
         .nav-links a:hover { color: var(--color-accent); }
         .nav-links .btn { padding: 10px 20px; font-size: 0.9rem; }
-        
-        /* --- SECCIONES --- */
-        .hero-section {
-            display: flex;
-            align-items: center;
-            min-height: 95vh;
-            padding-top: 80px;
-            padding-bottom: 4rem;
-        }
-        .hero-section .container {
-            display: grid;
-            grid-template-columns: 55fr 45fr;
-            align-items: center;
-            gap: 2rem;
-        }
-        .hero-text-content { padding: 0; }
-        .hero-text-content h1 { margin-bottom: 2rem; }
-        .hero-subtitle { font-size: 1.1rem; max-width: 50ch; margin-bottom: 2.5rem; line-height: 1.6; color: #555; }
-        .hero-cta-container { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
-        .hero-video-container { width: 100%; height: 100%; align-self: stretch; min-height: 500px; border-radius: 8px; overflow: hidden;}
-        .hero-video-container video { width: 100%; height: 100%; object-fit: cover; }
-        
-        .trust-bar-section { 
-            padding: 3rem 0; 
-            background-color: var(--color-primary);
-            text-align: center; 
-        }
-        .trust-bar-section .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 1.5rem 3rem;
-        }
-        .trust-bar-title { 
-            text-transform: uppercase; 
-            font-size: 1rem; 
-            letter-spacing: 1px; 
-            color: #ccc;
-            margin-bottom: 0;
-            max-width: none; 
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-        }
-        .trust-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 3rem; }
-        .trust-logos img { 
-            max-height: 40px; 
-            width: auto; 
-            filter: brightness(0) invert(1) opacity(0.6);
-            transition: all 0.3s ease;
-        }
-        .trust-logos img:hover {
-            filter: brightness(0) invert(1) opacity(1);
-        }
+        .mobile-nav-toggle { display: none; }
 
-        .mission-section-new { padding: 10rem 0; }
-        .mission-grid { display: grid; grid-template-columns: repeat(2, 1fr); align-items: center; background-color: white; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden;}
-        .mission-image-new { position: relative; align-self: stretch; }
-        .mission-image-new video { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .mission-text-new { padding: 4rem; }
-        .mission-text-new h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 2rem; }
-        .mission-text-new p { max-width: none; margin-bottom: 1.5rem; }
-        .mission-text-new strong { font-weight: 700; color: var(--color-primary); }
-        .value-prop-list { list-style: none; margin-top: 2rem; padding: 0; }
-        .value-prop-list li { display: flex; align-items: flex-start; margin-bottom: 1rem; font-size: 1.05rem; }
-        .value-prop-list i { font-size: 1.5rem; color: var(--color-accent); margin-right: 1rem; line-height: 1.5; }
-        .mission-text-new .btn { margin-top: 1.5rem; }
-        
-        .differentiator-section {
+        /* --- DIVISOR DE SECCIÓN --- */
+        .section-divider {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 30px;
+            background-color: rgba(249, 248, 246, 0.8);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05), 0 -2px 10px rgba(0,0,0,0.05);
+            margin-top: -5rem;
             position: relative;
-            background-color: var(--color-primary);
-            color: var(--color-background);
+            z-index: 10;
+            padding: 0 5%;
+        }
+        
+        /* --- HERO SECTION --- */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 15vh;
+            padding-bottom: 5rem;
+            color: white;
             overflow: hidden;
         }
-        .differentiator-section .bg-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: 1;
-        }
-        .differentiator-section .video-overlay {
+        .hero-bg-image {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(29, 45, 60, 0.75);
+            background-image: url('equipo-trabajando-lsl.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, 
+                rgba(15, 23, 42, 0.95) 0%,
+                rgba(15, 23, 42, 0.9) 40%,
+                rgba(15, 23, 42, 0) 55%
+            );
             z-index: 2;
         }
-        .differentiator-section .container {
+        .hero-section .container {
             position: relative;
             z-index: 3;
         }
-        .differentiator-intro {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 6rem auto;
+        .hero-text-content {
+            max-width: 45%;
         }
-        .differentiator-intro h2 {
-            color: var(--color-background);
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
+        .hero-accent-text {
+            color: var(--color-accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            height: 2.5em; 
+            display: inline-block;
+            vertical-align: top;
         }
-        .differentiator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; text-align: left; }
-        .differentiator-card { background-color: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; backdrop-filter: blur(5px); }
+        .hero-text-content h1 {
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 1.2rem;
+        }
+        .hero-subtitle {
+            font-size: 1.1rem;
+            max-width: 50ch;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: var(--color-accent);
+            height: auto;
+            display: inline-block;
+            vertical-align: top;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 1s forwards;
+        }
+        .hero-cta-container { 
+            display: flex; 
+            gap: 1rem; 
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+        
+        @keyframes fadeIn { to { opacity: 1; } }
+        
+        /* --- SECCIÓN MISIÓN --- */
+        .mission-section { padding-top: 5rem; padding-bottom: 10rem; }
+        .mission-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; min-height: 80vh; }
+        .mission-text-content { background-color: white; color: var(--color-primary); padding: 5rem 5%; display: flex; flex-direction: column; justify-content: center; }
+        .mission-text-content h2 { color: var(--color-primary); font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 2rem; }
+        .mission-text-content p { color: #333; max-width: 45ch; margin-bottom: 1.5rem; }
+        .mission-text-content strong { font-weight: 700; color: var(--color-primary); }
+        .mission-text-content strong.text-accent { color: var(--color-accent); }
+        .value-prop-list { list-style: none; margin-top: 2.5rem; padding: 0; }
+        .value-prop-list li { display: flex; align-items: flex-start; margin-bottom: 1.5rem; font-size: 1.05rem; color: #333; }
+        .value-prop-list i { font-size: 1.5rem; color: var(--color-accent); margin-right: 1rem; line-height: 1.5; }
+        .mission-text-content .btn { margin-top: 2rem; border-color: var(--color-accent); color: var(--color-accent); background-color: transparent; }
+        .mission-text-content .btn:hover { background-color: var(--color-accent); color: white; }
+        .mission-video-wrapper { position: relative; height: 100%; width: 100%; overflow: hidden; }
+        .mission-video-wrapper::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(29, 45, 60, 0.25); mix-blend-mode: multiply; }
+        .mission-video-wrapper video { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* --- SECCIÓN SOLUCIONES --- */
+        .solutions-section { background-color: #f0f0f0; }
+        .solutions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .solution-card { background-color: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .solution-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        .solution-card-image { width: 100%; height: 250px; overflow: hidden; }
+        .solution-card-image img { width: 100%; height: 100%; object-fit: cover; }
+        .solution-card-content { padding: 2rem; }
+        .solution-card-content h3 { font-size: 1.5rem; margin-bottom: 0; color: var(--color-accent); }
+        .solution-card-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-primary); color: white; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: translateY(100%); transition: opacity 0.4s ease, transform 0.4s ease; z-index: 2; }
+        .solution-card:hover .solution-card-overlay { opacity: 1; transform: translateY(0); }
+        .solution-card-overlay h3 { color: white; }
+        .solution-card-overlay p { color: #eee; font-size: 1rem; max-width: none; }
+        .solution-card-overlay .icon-wrapper { background-image: linear-gradient(135deg, var(--color-accent), #e88a6d); }
+        .solution-card-overlay .icon-wrapper i { font-size: 1.8rem; color: white; }
+        
+        /* --- SECCIÓN DIFERENCIADORES --- */
+        .differentiator-section { position: relative; background-color: var(--color-primary); color: var(--color-background); overflow: hidden; }
+        .differentiator-section .bg-video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: 1; }
+        .differentiator-section .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(29, 45, 60, 0.75); z-index: 2; }
+        .differentiator-section .container { position: relative; z-index: 3; }
+        .differentiator-intro { text-align: center; max-width: 800px; margin: 0 auto 6rem auto; }
+        .differentiator-intro h2 { color: var(--color-background); font-size: clamp(2.5rem, 4vw, 3.5rem); }
+        .differentiator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; text-align: left; counter-reset: card-counter; }
+        .differentiator-card { background-color: rgba(255, 255, 255, 0.05); padding: 2.5rem 2rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; backdrop-filter: blur(5px); position: relative; overflow: hidden; }
         .differentiator-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
-        .icon-wrapper { background-color: var(--color-accent); border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; margin-bottom: 1.5rem; }
+        .differentiator-card::before { content: "0" counter(card-counter); counter-increment: card-counter; position: absolute; top: -1rem; right: 1rem; font-family: 'DM Serif Display', serif; font-size: 5rem; font-weight: 700; color: rgba(255, 255, 255, 0.1); line-height: 1; z-index: 1; }
+        .icon-wrapper { background-image: linear-gradient(135deg, var(--color-accent), #e88a6d); border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; margin-bottom: 1.5rem; box-shadow: 0 4px 10px rgba(199, 93, 60, 0.3); position: relative; z-index: 2; }
         .differentiator-card .icon-wrapper i { font-size: 1.8rem; color: var(--color-background); }
-        .differentiator-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; margin-bottom: 1rem; color: var(--color-background); }
-        .differentiator-card p { color: #ccc; max-width: none; font-size: 1rem; }
-        .testimonial-card { background-color: rgba(255, 255, 255, 0.9); color: var(--color-primary); border: 2px solid var(--color-accent); display: flex; flex-direction: column; justify-content: space-between; }
-        .testimonial-card p.quote { font-size: 1.4rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic; max-width: none; }
-        .testimonial-card p.quote::before { content: '“'; font-size: 4rem; color: var(--color-accent); position: absolute; transform: translate(-30px, -20px); opacity: 0.8; }
-        .testimonial-author { margin-top: auto; text-align: right; }
+        .differentiator-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; margin-bottom: 1rem; color: var(--color-background); position: relative; z-index: 2; }
+        .differentiator-card p { color: #ccc; max-width: none; font-size: 1rem; position: relative; z-index: 2; }
+        .differentiator-grid > .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .differentiator-grid > .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .differentiator-grid > .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .differentiator-grid > .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .differentiator-grid > .reveal:nth-child(5) { transition-delay: 0.5s; }
+        .differentiator-grid > .reveal:nth-child(6) { transition-delay: 0.6s; }
+        .testimonial-card { background-color: #FFFFFF; color: var(--color-primary); border: 2px solid var(--color-accent); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease, box-shadow 0.3s ease; overflow: hidden; padding: 2.5rem; }
+        .testimonial-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .testimonial-card p.quote { font-size: 1.4rem; line-height: 1.6; margin-bottom: 2rem; font-style: italic; max-width: none; padding-top: 1.5rem; position: relative; text-align: left; }
+        .testimonial-card p.quote::before { content: '“'; font-family: 'DM Serif Display', serif; font-size: 6rem; color: var(--color-accent); opacity: 0.6; position: absolute; top: 1rem; left: -1rem; line-height: 1; }
+        .testimonial-card p.quote strong { font-weight: 700; color: var(--color-accent); font-style: normal; }
+        .testimonial-author { margin-top: auto; text-align: right; padding: 0; }
+        .testimonial-author::before { content: ''; display: block; width: 50px; height: 2px; background-color: var(--color-accent); margin: 0 0 1rem auto; }
         .testimonial-author strong { display: block; font-size: 1.1rem; color: var(--color-primary); }
         .testimonial-author span { font-size: 0.9rem; color: #777; }
+        @media (min-width: 1024px) {
+            .testimonial-card {
+                grid-column: 1 / -1;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+        }
 
-        .solutions-section {
-            background-color: var(--color-background);
-            border-top: 1px solid var(--color-gray-light);
-        }
-        .solutions-grid {
-            position: relative;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            border-radius: 8px;
-            overflow: hidden;
-            z-index: 1;
-        }
-        .solutions-grid .solutions-bg-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: 1;
-        }
-        .solution-card {
-            background-color: rgba(29, 45, 60, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-top: 4px solid var(--color-accent);
-            padding: 2.5rem;
-            text-align: center; 
-            box-shadow: none;
-            transition: background-color 0.4s ease, transform 0.4s ease;
-            z-index: 2;
-            backdrop-filter: blur(5px);
-        }
-        .solution-card:hover {
-            transform: translateY(-5px);
-            background-color: rgba(29, 45, 60, 0.85);
-        }
-        .solution-card .icon-wrapper { margin-left: auto; margin-right: auto; }
-        .solution-card h3 { 
-            margin-bottom: 1rem; 
-            font-size: 1.6rem;
-            color: #FFFFFF;
-        }
-        .solution-card p { 
-            max-width: 35ch; 
-            margin: 0 auto;
-            color: #E0E0E0;
-        }
-        .solution-link { display: inline-block; margin-top: 1.5rem; font-weight: 700; color: var(--color-accent); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.5px;}
-        .solution-link:hover { text-decoration: underline; }
-                
-        .experience-section { background-color: var(--color-primary); color: #fff; }
-        .experience-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; text-align: center; margin-bottom: 5rem; }
-        .metric-item h3 { font-size: 3rem; color: var(--color-accent); margin-bottom: 0.5rem; }
-        .metric-item p { color: #ccc; max-width: 25ch; margin: 0 auto; }
-        .experience-logos h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; color: #ccc; margin-bottom: 3rem; text-align: center; font-family: 'Inter', sans-serif; font-weight: 500;}
-        .logos-grid { display: flex; flex-wrap: wrap; gap: 3rem; justify-content: center; align-items: center; }
-        .logos-grid img { max-height: 45px; width: auto; filter: brightness(0) invert(1) opacity(0.6); transition: all 0.3s ease; }
-        .logos-grid img:hover { filter: brightness(0) invert(1) opacity(1); }
+        /* --- SECCIÓN MÉTODO --- */
+        .method-section { background-color: #fff; border-top: 1px solid var(--color-gray-light); padding-bottom: 10rem; overflow: hidden; }
+        .method-timeline { position: relative; list-style: none; padding: 2rem 0; margin-top: 3rem; --timeline-progress: 0; }
+        .method-content { display: flex; flex-direction: column; height: 100%; position: relative; z-index: 10; }
+        .method-content h3 { font-size: 1.5rem; margin-bottom: 1rem; line-height: 1.3; transition: color 0.4s ease; }
+        .method-state { font-style: italic; font-size: 1rem; color: #777; max-width: 40ch; margin: -0.5rem 0 1.5rem 0; }
+        .method-content p { font-size: 1rem; max-width: 40ch; margin: 0 0 1rem 0; color: #555; line-height: 1.6; }
+        .method-image-wrapper { z-index: 5; position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transition: box-shadow 0.4s ease; }
+        .method-image-wrapper img { width: 100%; height: 100%; display: block; object-fit: cover; }
+        .method-image-hover { position: absolute; top: 0; left: 0; z-index: 2; transform: translateY(100%); transition: transform 0.4s ease; }
+        .method-deliverable-box { background-color: transparent; border: 1px solid var(--color-gray-light); border-radius: 4px; padding: 1.2rem; margin-top: 1.5rem; max-width: 40ch; transition: border-color 0.4s ease, background-color 0.4s ease; }
+        .method-deliverable-box p { font-weight: 500; color: var(--color-primary); max-width: none; font-size: 1rem; margin: 0; line-height: 1.4; transition: color 0.4s ease; }
+        .method-deliverable-box p strong { font-weight: 700; color: var(--color-accent); display: block; font-family: 'Inter', sans-serif; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; transition: color 0.4s ease; }
+        .method-cta { text-align: center; margin-top: 0; }
+        .method-cta em { display: block; margin-top: 1rem; font-size: 0.9rem; color: #777; font-style: normal; }
+        .method-node { width: 80px; height: 80px; background-color: var(--color-background); border: 2px solid var(--color-gray-light); border-radius: 50%; z-index: 10; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; color: var(--color-primary); transition: all 0.4s ease; }
+        .method-step:hover .method-node { background-color: var(--color-accent); color: #fff; border-color: var(--color-accent); transform: translateY(-50%) scale(1.1); }
+        .method-step:hover .method-image-wrapper { box-shadow: 0 10px 25px rgba(199, 93, 60, 0.3); }
+        .method-step:hover .method-deliverable-box { background-color: var(--color-accent); border-color: var(--color-accent); }
+        .method-step:hover .method-deliverable-box p, .method-step:hover .method-deliverable-box p strong { color: #fff; }
+        .method-step:hover .method-content h3 { color: var(--color-accent); }
+        .method-step:hover .method-image-hover { transform: translateY(0); }
         
+        @media (min-width: 901px) {
+            .method-timeline { max-width: 1000px; margin-left: auto; margin-right: auto; padding-bottom: 5rem; }
+            .method-timeline::before, .method-timeline::after { content: ''; position: absolute; left: 50%; width: 2px; background-color: var(--color-gray-light); transform: translateX(-50%); z-index: 1; }
+            .method-timeline::before { top: 0; bottom: 0; }
+            .method-timeline::after { bottom: 0; height: 5rem; background-color: var(--color-accent); transform: translateX(-50%) scaleY(var(--timeline-progress)); transform-origin: top; transition: transform 0.1s linear; }
+            .method-step { position: relative; width: 50%; padding: 0 50px; margin-bottom: 8rem; display: flex; align-items: center; min-height: 300px; }
+            .method-step:nth-child(even) { left: 50%; text-align: left; }
+            .method-step:nth-child(odd) { left: 0; text-align: right; }
+            .method-node { position: absolute; top: 50%; transform: translateY(-50%); }
+            .method-step:nth-child(odd) .method-node { right: -40px; }
+            .method-step:nth-child(even) .method-node { left: -40px; }
+            .method-image-wrapper { position: absolute; top: 50%; transform: translateY(-50%); width: 400px; }
+            .method-step:nth-child(odd) .method-image-wrapper { left: 100%; margin-left: 100px; }
+            .method-step:nth-child(even) .method-image-wrapper { right: 100%; margin-right: 100px; }
+            .method-step:nth-child(odd) .method-state,
+            .method-step:nth-child(odd) .method-deliverable-box,
+            .method-step:nth-child(odd) .method-content p { margin-left: auto; margin-right: 0; }
+            .method-step:last-child { margin-bottom: 0; }
+        }
+
+        /* --- SECCIÓN EQUIPO (AJUSTADO) --- */
         .team-section { background-color: #fff; border-top: 1px solid var(--color-gray-light); }
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
-        .team-member-card { text-align: center; transition: box-shadow 0.3s ease; padding-bottom: 1.5rem; border-radius: 8px; }
-        .team-member-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .team-member-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 4px solid white; transition: transform 0.3s ease; }
-        .team-member-card:hover .team-member-img { transform: scale(1.05); }
-        .team-member-card h3 { margin-bottom: 0.25rem; }
-        .team-member-role { color: var(--color-accent); font-weight: 700; margin-bottom: 1rem; font-size: 1rem; }
-        .team-member-bio { font-size: 0.95rem; max-width: 35ch; margin: 0 auto; }
-        .team-member-social { margin-top: 1rem; }
-        .team-member-social a { color: #aaa; font-size: 1.5rem; transition: color 0.3s ease; }
-        .team-member-social a:hover { color: var(--color-accent); }
-        
+        .team-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Cambio: Tamaño mínimo reducido */
+            gap: 2rem; /* Cambio: Espacio reducido */
+        }
+        .team-member-card { 
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: box-shadow 0.4s ease;
+        }
+        .team-member-card:hover {
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
+        .team-member-img-wrapper {
+            width: 100%;
+            height: 350px; /* Cambio: Altura ligeramente reducida */
+        }
+        .team-member-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.4s ease;
+        }
+        .team-member-card:hover .team-member-img {
+            transform: scale(1.05);
+        }
+        .team-member-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+        .team-member-card:hover .team-member-overlay {
+            transform: translateY(0);
+        }
+        .team-member-overlay h3 { 
+            color: white; 
+            margin-bottom: 0.5rem;
+        }
+        .team-member-overlay .team-member-role { 
+            color: var(--color-accent); 
+            font-weight: 700; 
+            margin-bottom: 1.5rem; 
+            font-size: 1rem; 
+        }
+        .team-member-overlay .team-member-bio { 
+            color: #eee;
+            font-size: 0.95rem; 
+            max-width: 35ch; 
+            margin: 0 auto; 
+        }
+        .team-member-overlay .team-member-social { 
+            margin-top: 1.5rem; 
+        }
+        .team-member-overlay .team-member-social a { 
+            color: #aaa; 
+            font-size: 1.5rem; 
+            transition: color 0.3s ease; 
+        }
+        .team-member-overlay .team-member-social a:hover { 
+            color: var(--color-accent); 
+        }
+
+        /* --- OTRAS SECCIONES --- */
         .lead-magnet-section { background-color: var(--color-background); border-top: 1px solid var(--color-gray-light);}
         .lead-magnet-grid { display: grid; grid-template-columns: 0.8fr 1fr; gap: 4rem; align-items: center; background-color: #fff; padding: 4rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-radius: 8px;}
         .lead-magnet-image img { width: 100%; max-width: 300px; height: auto; }
         .lead-magnet-text h3 { font-size: 2rem; margin-bottom: 1rem; }
         .lead-magnet-text p { max-width: 45ch; margin-bottom: 2rem; }
-
         .cta-section { text-align: center; border-top: 1px solid var(--color-gray-light); }
         .cta-section h2 { margin-bottom: 1.5rem; }
         .cta-intro { max-width: 60ch; margin: 0 auto 2.5rem auto; }
         .cta-value-list { list-style: none; padding: 0; max-width: 500px; margin: 0 auto 2.5rem auto; text-align: left; }
         .cta-value-list li { margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: flex-start; }
         .cta-value-list i { color: var(--color-accent); font-size: 1.5rem; margin-right: 0.75rem; line-height: 1.5; }
-        
         .footer { text-align: center; padding: 3rem 5%; color: #777; font-size: 0.9rem; border-top: 1px solid var(--color-gray-light); }
         .footer p { max-width: none; }
-        
-        /* --- ESTILOS PARA EL TIMELINE DEL MÉTODO --- */
-        .method-section {
-            background-color: #fff;
-            border-top: 1px solid var(--color-gray-light);
-            padding-bottom: 12rem;
-        }
-        .method-timeline {
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            list-style: none;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        .method-timeline::before {
-            content: '';
-            position: absolute;
-            top: 40px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: var(--color-gray-light);
-            z-index: 1;
-        }
-        .method-step {
-            position: relative;
-            flex-basis: 23%;
-            text-align: center;
-            padding-top: 80px;
-        }
-        .method-node {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
-            background-color: var(--color-background);
-            border: 2px solid var(--color-gray-light);
-            border-radius: 50%;
-            z-index: 2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.8rem;
-            color: var(--color-primary);
-            transition: all 0.4s ease;
-        }
-        .method-content {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .method-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-        }
-        .method-state {
-            font-style: italic;
-            font-size: 1rem;
-            color: #777;
-            max-width: 30ch;
-            margin: -0.5rem auto 1.5rem auto;
-            transition: color 0.4s ease;
-        }
-        .method-content p {
-            font-size: 1rem;
-            max-width: 30ch;
-            margin: 0 auto 1rem auto;
-            color: #555;
-            padding-bottom: 0;
-            border-bottom: none;
-            line-height: 1.6;
-            transition: color 0.4s ease;
-        }
-        .method-deliverable-box {
-            background-color: transparent;
-            border: 1px solid var(--color-gray-light);
-            border-radius: 4px;
-            padding: 1.2rem;
-            margin-top: auto;
-            max-width: 30ch;
-            margin-left: auto;
-            margin-right: auto;
-            transition: border-color 0.4s ease, background-color 0.4s ease;
-        }
-        .method-deliverable-box p {
-            font-weight: 500;
-            color: var(--color-primary);
-            max-width: none;
-            font-size: 1rem;
-            margin: 0;
-            padding: 0;
-            border-bottom: none;
-            line-height: 1.4;
-            transition: color 0.4s ease;
-        }
-        .method-deliverable-box p span {
-            font-weight: 700;
-            color: var(--color-accent);
-            display: block;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-            transition: color 0.4s ease;
-        }
-        .method-cta {
-            text-align: center;
-            margin-top: 5rem;
-        }
-        /* -- Efecto Hover unificado -- */
-        .method-step:hover .method-node {
-            background-color: var(--color-accent);
-            color: #fff;
-            border-color: var(--color-accent);
-            transform: translateX(-50%) scale(1.1);
-        }
-        .method-step:hover .method-content p,
-        .method-step:hover .method-state {
-            color: var(--color-accent);
-        }
-        .method-step:hover .method-deliverable-box {
-            background-color: var(--color-accent);
-            border-color: var(--color-accent);
-        }
-        .method-step:hover .method-deliverable-box p,
-        .method-step:hover .method-deliverable-box p span {
-            color: #fff;
-        }
 
-        /* --- MEDIA QUERIES --- */
+        /* --- REGLAS RESPONSIVE --- */
         @media (max-width: 900px) {
             body { font-size: 16px; padding-top: 0; }
             section { padding: 6rem 0; }
-            .navbar { display: none; }
-            .hero-section {
-                padding-top: 4rem;
-                display: block;
-            }
-            .hero-section .container {
-                grid-template-columns: 1fr; 
-            }
-            .hero-text-content { order: 1; padding: 4rem 5%; text-align: center;}
-            .hero-video-container { order: 2; min-height: 300px; }
+            .nav-links { position: fixed; inset: 0 0 0 30%; flex-direction: column; justify-content: center; gap: 3rem; background-color: rgba(249, 248, 246, 0.95); backdrop-filter: blur(10px); transform: translateX(100%); transition: transform 0.3s ease-out; }
+            .nav-links[data-visible="true"] { transform: translateX(0%); }
+            .mobile-nav-toggle { display: block; position: relative; z-index: 1001; background: transparent; border: 0; cursor: pointer; }
+            .mobile-nav-toggle i { font-size: 2rem; color: var(--color-primary); }
+            .hero-section { background-color: var(--color-primary); text-align: center; padding-top: 100px; align-items: center; }
+            .hero-bg-image { display: none; }
+            .hero-overlay { background: rgba(15, 23, 42, 0.95); }
+            .hero-text-content { max-width: 100%; }
+            .hero-subtitle { max-width: 100%; }
             .hero-cta-container { justify-content: center; }
-            .mission-grid, .lead-magnet-grid, .experience-content, .experience-metrics-grid { grid-template-columns: 1fr; }
-            
-            .differentiator-section .differentiator-intro {
-                margin-bottom: 4rem;
-            }
-            .experience-metrics-grid { gap: 2rem; }
-            .lead-magnet-grid { padding: 2.5rem; }
-            .lead-magnet-image { text-align: center; margin-bottom: 2rem; }
-            
-            /* TIMELINE A VERTICAL EN MÓVIL */
-            .method-timeline {
-                flex-direction: column;
-                padding: 0;
-            }
-            .method-timeline::before {
-                left: 39px;
-                top: 0;
-                bottom: 0;
-                width: 2px;
-                right: auto;
-            }
-            .method-step {
-                flex-basis: auto;
-                padding-top: 0;
-                padding-left: 90px;
-                padding-bottom: 4rem;
-                text-align: left;
-            }
-            .method-node {
-                top: 0;
-                left: 0;
-                transform: none;
-            }
-            .method-step:hover .method-node {
-                transform: scale(1.1);
-            }
-            .method-content {
-                margin-top: 0;
-            }
-            .method-content p, .method-content h3, .method-state {
-                margin: 0 0 1rem 0;
-                max-width: none;
-            }
-            .method-deliverable-box {
-                margin-left: 0;
-                margin-right: 0;
-                max-width: none;
-            }
+            .lead-magnet-grid { grid-template-columns: 1fr; }
+            .method-timeline::before, .method-timeline::after { left: 39px; }
+            .method-timeline::before { transform: none; }
+            .method-timeline::after { transform: scaleY(var(--timeline-progress)); transform-origin: top; }
+            .method-step { padding: 0 0 2rem 100px; text-align: left; width: auto; left: auto; }
+            .method-node { position: absolute; top: 0; left: 0; transform: none; }
+            .method-step:hover .method-node { transform: scale(1.1); }
+            .method-content { margin-top: 1rem; }
+            .method-content p, .method-content h3, .method-state { max-width: none; margin-left: 0; }
+            .method-image-wrapper { position: static; width: 100%; transform: none; margin: 1.5rem 0 3rem 0; }
+            .method-deliverable-box { max-width: none; margin-left: 0; }
         }
         @media (max-width: 480px) {
             section, .cta-section { padding: 5rem 0; }
@@ -504,19 +428,25 @@
 
     <nav class="navbar">
         <a href="#" class="nav-logo">LSL <span>Lab</span></a>
-        <ul class="nav-links">
+        <ul class="nav-links" id="nav-links">
             <li><a href="#mision">Nosotros</a></li>
             <li><a href="#soluciones">Soluciones</a></li>
             <li><a href="#metodo">Método</a></li>
-            <li><a href="#experiencia">Experiencia</a></li>
             <li><a href="#equipo">Equipo</a></li>
             <li><a href="#reservas" class="btn btn-primary">Agendar Cita</a></li>
         </ul>
+        <button class="mobile-nav-toggle" aria-controls="nav-links" aria-expanded="false">
+            <i class="ph ph-list"></i>
+            <span class="sr-only">Menú</span>
+        </button>
     </nav>
 
     <header id="hero" class="hero-section">
+        <div class="hero-bg-image"></div>
+        <div class="hero-overlay"></div>
         <div class="container">
             <div class="hero-text-content">
+                <p class="hero-accent-text"></p>
                 <h1>Conocimiento que Transforma, Estrategia que impulsa el logro de tus Objetivos.</h1>
                 <p class="hero-subtitle">Consultoría estratégica y capacitación para PyMEs en la Comarca Lagunera. Te ayudamos a dejar de improvisar para que empieces a institucionalizar tu crecimiento.</p>
                 <div class="hero-cta-container">
@@ -524,49 +454,34 @@
                     <a href="#metodo" class="btn btn-secondary btn-large">Ver Nuestro Método</a>
                 </div>
             </div>
-            <div class="hero-video-container">
-                <video autoplay loop muted playsinline>
-                    <source src="Video_de_equipo_trabajando_en_español.mp4" type="video/mp4">
-                    Tu navegador no soporta el video.
-                </video>
-            </div>
         </div>
     </header>
-
-    <section class="trust-bar-section">
-        <div class="container">
-            <p class="trust-bar-title">Nuestra experiencia está respaldada por instituciones como:</p>
-            <div class="trust-logos">
-                <img src="logo-harvard.png" alt="Logo de Universidad de Harvard">
-                <img src="logo-tec-monterrey.png" alt="Logo de Tecnológico de Monterrey">
-                <img src="logo-uab.png" alt="Logo de Universidad Autónoma de Barcelona">
-            </div>
-        </div>
-    </section>
+    
+    <div class="section-divider"><a href="#" class="nav-logo">LSL <span>Lab</span></a></div>
     
     <main>
-        <section id="mision" class="mission-section-new reveal">
-            <div class="container">
-                <div class="mission-grid">
-                    <div class="mission-image-new">
-                        <video class="mission-bg" autoplay loop muted playsinline>
-                            <source src="Foto_a_Video_Iterativo (1).mp4" type="video/mp4">
-                            Tu navegador no soporta el video.
-                        </video>
-                    </div>
-                    <div class="mission-text-new">
-                        <h2>Tu misión es crecer: La nuestra trazar el plan y desarrollar tus competencias para lograrlo.</h2>
-                        <p><strong>Nuestra Misión es:</strong> Transformamos el conocimiento en planes estratégicos para que tu organización prospere en el competitivo entorno de La Laguna.</p>
-                        <ul class="value-prop-list">
-                            <li><i class="ph ph-target"></i><div><strong>Metodologías Activas y Basadas en Proyectos</strong><br>Para un aprendizaje práctico y resultados tangibles.</div></li>
-                            <li><i class="ph ph-handshake"></i><div><strong>Acompañamiento Estratégico Integral</strong><br>Somos tus socios desde el diagnóstico hasta la implementación.</div></li>
-                            <li><i class="ph ph-map-pin"></i><div><strong>Enfoque 100% en la Comarca Lagunera</strong><br>Soluciones que entienden y se adaptan a la realidad de tu mercado.</div></li>
-                        </ul>
-                        <a href="#reservas" class="btn">Iniciar Conversación</a>
-                    </div>
+        <section id="mision" class="mission-section reveal">
+            <div class="mission-grid">
+                <div class="mission-text-content">
+                    <h2>Tu misión es crecer: La nuestra trazar el plan y desarrollar tus competencias para lograrlo.</h2>
+                    <p><strong class="text-accent">Nuestra Misión es:</strong> Transformamos el conocimiento en planes estratégicos para que tu organización prospere en el competitivo entorno de La Laguna.</p>
+                    <ul class="value-prop-list">
+                        <li><i class="ph ph-target"></i><div><strong class="text-accent">Metodologías Activas y Basadas en Proyectos</strong><br>Para un aprendizaje práctico y resultados tangibles.</div></li>
+                        <li><i class="ph ph-handshake"></i><div><strong class="text-accent">Acompañamiento Estratégico Integral</strong><br>Somos tus socios desde el diagnóstico hasta la implementación.</div></li>
+                        <li><i class="ph ph-map-pin"></i><div><strong class="text-accent">Enfoque 100% en la Comarca Lagunera</strong><br>Soluciones que entienden y se adaptan a la realidad de tu mercado.</div></li>
+                    </ul>
+                    <a href="#reservas" class="btn">Iniciar Conversación</a>
+                </div>
+                <div class="mission-video-wrapper">
+                    <video autoplay loop muted playsinline>
+                        <source src="video-mision.mp4" type="video/mp4">
+                        Tu navegador no soporta el video.
+                    </video>
                 </div>
             </div>
         </section>
+
+        <div class="section-divider"><a href="#" class="nav-logo">LSL <span>Lab</span></a></div>
 
         <section id="differentiator" class="differentiator-section">
             <video class="bg-video" autoplay loop muted playsinline>
@@ -581,13 +496,21 @@
                 <div class="differentiator-grid">
                     <div class="differentiator-card reveal"><div class="icon-wrapper"><i class="ph ph-chart-bar"></i></div><h3>De la Intuición a la Estrategia Medible</h3><p>Si sientes que tomas decisiones a ciegas, nosotros las anclamos a tus indicadores. Así, cada paso que das es un avance real y medible hacia tus metas.</p></div>
                     <div class="differentiator-card reveal"><div class="icon-wrapper"><i class="ph ph-map-pin"></i></div><h3>Soluciones para el Mercado Real de La Laguna</h3><p>Olvídate de las estrategias genéricas que no funcionan aquí. Conocemos el ADN de la Comarca Lagunera y creamos un plan que resuena con tus clientes locales.</p></div>
-                    <div class="testimonial-card reveal"><p class="quote">Con LSL pasamos de apagar fuegos a tener un plan claro que todo el equipo entiende. Por primera vez, siento que tengo el control de mi crecimiento.</p><div class="testimonial-author"><strong>Juan Carlos Herrera</strong><span>Director, [Nombre de Empresa Local]</span></div></div>
+                    <div class="testimonial-card reveal">
+                        <p class="quote">Con ellos pasamos de apagar fuegos a tener un plan estructurado y la manera de medirlo. <strong>Ahora tenemos el control de lo que pasa</strong> y sabemos que acciones concretas emprender.</p>
+                        <div class="testimonial-author">
+                            <strong>Juan Carlos Favela</strong>
+                            <span>Director, Empresa Maquiladora Local</span>
+                        </div>
+                    </div>
                     <div class="differentiator-card reveal"><div class="icon-wrapper"><i class="ph ph-tools"></i></div><h3>De la Teoría a la Competencia Real</h3><p>No te entregamos un manual para guardarlo en un cajón. Desarrollamos las competencias de tu equipo a través de la práctica, creando una cultura de mejora continua.</p></div>
                     <div class="differentiator-card reveal"><div class="icon-wrapper"><i class="ph ph-handshake"></i></div><h3>No Eres un Cliente, Eres un Socio Estratégico</h3><p>No desaparecemos después del diagnóstico. Te acompañamos en la implementación, ajustando el plan y asegurando que la transformación sea un éxito duradero.</p></div>
                     <div class="differentiator-card reveal"><div class="icon-wrapper"><i class="ph ph-chart-line"></i></div><h3>Crecimiento que se ve en tu Estado de Resultados</h3><p>Nuestro objetivo no es que te 'sientas bien', es que tus números mejoren. Nos enfocamos en un impacto real y cuantificable en tu rentabilidad y consolidación.</p></div>
                 </div>
             </div>
         </section>
+
+        <div class="section-divider"><a href="#" class="nav-logo">LSL <span>Lab</span></a></div>
 
         <section id="soluciones" class="solutions-section reveal">
             <div class="container">
@@ -596,31 +519,50 @@
                     <p>Aclaramos el camino y te damos las herramientas para que tu empresa no solo sobreviva, sino que prospere de forma sistemática y organizada.</p>
                 </div>
                 <div class="solutions-grid">
-                    <video class="solutions-bg-video" autoplay loop muted playsinline>
-                        <source src="Generación_de_Video_a_Partir_de_Imagen (1).mp4" type="video/mp4">
-                        Tu navegador no soporta el video.
-                    </video>
                     <div class="solution-card">
-                        <div class="icon-wrapper"><i class="ph ph-compass"></i></div>
-                        <h3>Dirección y Claridad Estratégica</h3>
-                        <p>¿Sientes que tu día a día es apagar fuegos en lugar de construir el futuro? Juntos, definimos un mapa claro y alineamos tus operaciones, finanzas y equipo a las metas que realmente importan.</p>
-                        <a href="#" class="solution-link">Conoce más →</a>
+                        <div class="solution-card-image">
+                            <img src="solucion-1.jpg" alt="Persona analizando un mapa estratégico">
+                        </div>
+                        <div class="solution-card-content">
+                            <h3>Dirección y Claridad Estratégica</h3>
+                        </div>
+                        <div class="solution-card-overlay">
+                             <div class="icon-wrapper"><i class="ph ph-compass"></i></div>
+                            <h3>Dirección y Claridad Estratégica</h3>
+                            <p>¿Sientes que tu día a día es apagar fuegos en lugar de construir el futuro? Juntos, definimos un mapa claro y alineamos tus operaciones, finanzas y equipo a las metas que realmente importan.</p>
+                        </div>
                     </div>
                     <div class="solution-card">
-                        <div class="icon-wrapper"><i class="ph ph-users-three"></i></div>
-                        <h3>Equipos de Alto Rendimiento</h3>
-                        <p>¿Tienes gente talentosa pero el equipo no está alineado? Fortalecemos las competencias clave a través de talleres prácticos para que trabajen como una unidad cohesionada y eficiente.</p>
-                        <a href="#" class="solution-link">Conoce más →</a>
+                        <div class="solution-card-image">
+                            <img src="solucion-2.jpg" alt="Equipo de trabajo colaborando en una oficina">
+                        </div>
+                        <div class="solution-card-content">
+                            <h3>Equipos de Alto Rendimiento</h3>
+                        </div>
+                         <div class="solution-card-overlay">
+                            <div class="icon-wrapper"><i class="ph ph-users-three"></i></div>
+                            <h3>Equipos de Alto Rendimiento</h3>
+                            <p>¿Tienes gente talentosa pero el equipo no está alineado? Fortalecemos las competencias clave a través de talleres prácticos para que trabajen como una unidad cohesionada y eficiente.</p>
+                        </div>
                     </div>
                     <div class="solution-card">
-                        <div class="icon-wrapper"><i class="ph ph-graph"></i></div>
-                        <h3>Libertad y Crecimiento Sostenible</h3>
-                        <p>¿Si te vas de vacaciones, tu negocio se detiene? Creamos los sistemas y procesos para que tu empresa deje de depender de ti y funcione de manera autónoma, organizada y lista para escalar.</p>
-                        <a href="#" class="solution-link">Conoce más →</a>
+                        <div class="solution-card-image">
+                            <img src="solucion-3.jpg" alt="Gráficas de crecimiento y sostenibilidad">
+                        </div>
+                        <div class="solution-card-content">
+                            <h3>Libertad y Crecimiento Sostenible</h3>
+                        </div>
+                        <div class="solution-card-overlay">
+                            <div class="icon-wrapper"><i class="ph ph-graph"></i></div>
+                            <h3>Libertad y Crecimiento Sostenible</h3>
+                            <p>¿Si te vas de vacaciones, tu negocio se detiene? Creamos los sistemas y procesos para que tu empresa deje de depender de ti y funcione de manera autónoma, organizada y lista para escalar.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <div class="section-divider"><a href="#" class="nav-logo">LSL <span>Lab</span></a></div>
 
         <section id="metodo" class="method-section reveal">
             <div class="container">
@@ -631,70 +573,76 @@
                 
                 <ol class="method-timeline">
                     <li class="method-step">
-                        <div class="method-node" aria-label="Paso 1">01</div>
+                        <div class="method-node" aria-label="Paso 1: Diagnóstico"><i class="ph ph-magnifying-glass"></i></div>
                         <div class="method-content">
                             <h3>Diagnóstico y Mapa Estratégico</h3>
                             <p class="method-state">El Punto de Partida: Del potencial oculto a la claridad.</p>
                             <p>Entendemos a fondo el ADN de tu negocio. Identificamos no solo los problemas, sino las palancas de crecimiento reales.</p>
                             <div class="method-deliverable-box">
-                                <p><span>Entregable Clave:</span> Un Diagnóstico de Crecimiento y un mapa visual de oportunidades.</p>
+                                <p><strong>Tu Brújula de Crecimiento:</strong> Un Diagnóstico y un mapa visual de oportunidades.</p>
                             </div>
+                        </div>
+                        <div class="method-image-wrapper">
+                            <img src="imagen-diagnostico.jpg" alt="Brújula estilizada representando la fase de diagnóstico" class="method-image-default">
+                            <img src="imagen-diagnostico-hover.jpg" alt="Equipo de LSL analizando datos y gráficos durante la fase de diagnóstico estratégico" class="method-image-hover">
                         </div>
                     </li>
                     <li class="method-step">
-                        <div class="method-node" aria-label="Paso 2">02</div>
-                        <div class="method-content">
+                        <div class="method-node" aria-label="Paso 2: Hoja de Ruta"><i class="ph ph-map-trifold"></i></div>
+                         <div class="method-content">
                             <h3>Co-diseño de la Hoja de Ruta</h3>
                             <p class="method-state">Trazando el Camino: De las ideas a un plan concreto.</p>
                             <p>Creamos contigo una hoja de ruta a la medida, estructurada en proyectos prácticos y 100% aplicables a tu operación.</p>
                             <div class="method-deliverable-box">
-                                <p><span>Entregable Clave:</span> Una Hoja de Ruta Estratégica con proyectos, plazos y KPIs definidos.</p>
+                                <p><strong>Tu Brújula de Crecimiento:</strong> Una Hoja de Ruta Estratégica con proyectos, plazos y KPIs definidos.</p>
                             </div>
+                        </div>
+                        <div class="method-image-wrapper">
+                            <img src="imagen-hoja-ruta.jpg" alt="Icono de un mapa representando la creación de una hoja de ruta" class="method-image-default">
+                            <img src="imagen-hoja-ruta-hover.jpg" alt="Consultores colaborando sobre un pizarrón para diseñar la hoja de ruta de un cliente" class="method-image-hover">
                         </div>
                     </li>
                     <li class="method-step">
-                        <div class="method-node" aria-label="Paso 3">03</div>
+                        <div class="method-node" aria-label="Paso 3: Implementación"><i class="ph ph-users-three"></i></div>
                         <div class="method-content">
                             <h3>Implementación y Acompañamiento</h3>
                             <p class="method-state">Construyendo Capacidades: Del plan a la competencia real.</p>
                             <p>Nuestros expertos guían a tu equipo como mentores, asegurando que el conocimiento se transfiera y las competencias se adopten.</p>
                             <div class="method-deliverable-box">
-                                <p><span>Entregable Clave:</span> Un plan de desarrollo de competencias y herramientas prácticas para tu equipo.</p>
+                                <p><strong>Tu Brújula de Crecimiento:</strong> Un plan de desarrollo de competencias y herramientas prácticas para tu equipo.</p>
                             </div>
+                        </div>
+                         <div class="method-image-wrapper">
+                            <img src="imagen-implementacion.jpg" alt="Icono de personas colaborando para representar la implementación" class="method-image-default">
+                            <img src="imagen-implementacion-hover.jpg" alt="Un mentor de LSL guiando a un equipo de trabajo en la implementación de un nuevo proceso" class="method-image-hover">
                         </div>
                     </li>
                     <li class="method-step">
-                        <div class="method-node" aria-label="Paso 4">04</div>
+                        <div class="method-node" aria-label="Paso 4: Medición"><i class="ph ph-chart-line-up"></i></div>
                         <div class="method-content">
                             <h3>Medición de Impacto y ROI</h3>
                             <p class="method-state">La Cima: De la competencia a la consolidación del mercado.</p>
                             <p>Medimos el antes y el después en tus KPIs para demostrar el valor real de la colaboración y asegurar resultados sostenibles.</p>
                             <div class="method-deliverable-box">
-                                <p><span>Entregable Clave:</span> Un Dashboard de Resultados que muestra el "antes y después" de la colaboración.</p>
+                                <p><strong>Tu Brújula de Crecimiento:</strong> Un Dashboard de Resultados que muestra el "antes y después" de la colaboración.</p>
                             </div>
+                        </div>
+                        <div class="method-image-wrapper">
+                            <img src="imagen-medicion.jpg" alt="Gráfica de crecimiento representando la medición de impacto y ROI" class="method-image-default">
+                            <img src="imagen-medicion-hover.jpg" alt="Dashboard digital mostrando gráficos con indicadores de crecimiento y retorno de inversión (ROI)" class="method-image-hover">
                         </div>
                     </li>
                 </ol>
 
                 <div class="method-cta">
-                    <a href="#reservas" class="btn btn-primary">Discutamos la Hoja de Ruta para tu Empresa</a>
+                    <a href="#reservas" class="btn btn-primary">Trazar mi Plan de Crecimiento</a>
+                    <em>*Sesión de 30 min, sin costo y sin compromiso.*</em>
                 </div>
             </div>
         </section>
-        <section id="experiencia" class="experience-section reveal">
-            <div class="container">
-                <div class="section-intro">
-                    <h2>La Experiencia que nos Respalda</h2>
-                    <p>LSL es una firma nueva, pero la experiencia de nuestros fundadores ha generado resultados por décadas. Esta es la autoridad que ponemos a tu servicio.</p>
-                </div>
-                <div class="experience-metrics-grid">
-                    <div class="metric-item"><h3>+30 Años</h3><p>De experiencia formando líderes en instituciones de prestigio como el Tec de Monterrey.</p></div>
-                    <div class="metric-item"><h3>+5 Países</h3><p>Donde hemos presentado ponencias, aportando una visión global a los retos locales.</p></div>
-                    <div class="metric-item"><h3>+1,000</h3><p>Profesionales capacitados a través de nuestras metodologías a lo largo de nuestras carreras.</p></div>
-                </div>
-            </div>
-        </section>
-        
+
+        <div class="section-divider"><a href="#" class="nav-logo">LSL <span>Lab</span></a></div>
+
         <section id="equipo" class="team-section reveal">
             <div class="container">
                 <div class="section-intro">
@@ -702,29 +650,81 @@
                     <p>Conoce a las mentes estratégicas detrás de Learning and Solutions Lab.</p>
                 </div>
                 <div class="team-grid">
-                    <div class="team-member-card"><img src="uriel-valdes.png" alt="Foto de Uriel Valdés Perezgasga" class="team-member-img"><h3>Uriel Valdés Perezgasga</h3><p class="team-member-role">Socio Fundador</p><p class="team-member-bio">Experto en innovación educativa con maestrías por la Universidad de Harvard y la U. de Barcelona. Aporta una visión global y sólida base en investigación.</p><div class="team-member-social"><a href="#" target="_blank" aria-label="LinkedIn de Uriel Valdés Perezgasga"><i class="ph ph-linkedin-logo"></i></a></div></div>
-                    <div class="team-member-card"><img src="maximina-vaquera.jpg" alt="Foto de Maximina Vaquera Pedroza" class="team-member-img"><h3>Maximina Vaquera Pedroza</h3><p class="team-member-role">Socio Fundador</p><p class="team-member-bio">Psicóloga con +30 años de experiencia en el Tec de Monterrey, reconocida como mejor facilitadora y líder en la formación de consultores a nivel nacional.</p><div class="team-member-social"><a href="#" target="_blank" aria-label="LinkedIn de Maximina Vaquera Pedroza"><i class="ph ph-linkedin-logo"></i></a></div></div>
-                    <div class="team-member-card"><img src="miembro-3.jpg" alt="Foto de Nombre del Fundador 3" class="team-member-img"><h3>Nombre del Fundador 3</h3><p class="team-member-role">Socio Fundador</p><p class="team-member-bio">Breve resumen sobre la experiencia, especialidad o la pasión que este fundador aporta al equipo y a los clientes de LSL.</p><div class="team-member-social"><a href="#" target="_blank" aria-label="LinkedIn de Nombre del Fundador 3"><i class="ph ph-linkedin-logo"></i></a></div></div>
-                    <div class="team-member-card"><img src="miembro-4.jpg" alt="Foto de Nombre del Fundador 4" class="team-member-img"><h3>Nombre del Fundador 4</h3><p class="team-member-role">Socio Fundador</p><p class="team-member-bio">Breve resumen sobre la experiencia, especialidad o la pasión que este fundador aporta al equipo y a los clientes de LSL.</p><div class="team-member-social"><a href="#" target="_blank" aria-label="LinkedIn de Nombre del Fundador 4"><i class="ph ph-linkedin-logo"></i></a></div></div>
+                    <div class="team-member-card">
+                        <div class="team-member-img-wrapper">
+                            <img src="uriel-valdes.png" alt="Foto de Uriel Valdés Perezgasga, Socio Fundador de LSL" class="team-member-img">
+                        </div>
+                        <div class="team-member-overlay">
+                            <h3>Uriel Valdés Perezgasga</h3>
+                            <p class="team-member-role">Socio Fundador</p>
+                            <p class="team-member-bio">Experto en innovación educativa con maestrías por la Universidad de Harvard y la U. de Barcelona. Aporta una visión global y sólida base en investigación.</p>
+                            <div class="team-member-social">
+                                <a href="#" target="_blank" aria-label="LinkedIn de Uriel Valdés Perezgasga"><i class="ph ph-linkedin-logo"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member-card">
+                        <div class="team-member-img-wrapper">
+                            <img src="maximina-vaquera.jpg" alt="Foto de Maximina Vaquera Pedroza, Socia Fundadora de LSL" class="team-member-img">
+                        </div>
+                        <div class="team-member-overlay">
+                            <h3>Maximina Vaquera Pedroza</h3>
+                            <p class="team-member-role">Socia Fundadora</p>
+                            <p class="team-member-bio">Psicóloga con +30 años de experiencia en el Tec de Monterrey, reconocida como mejor facilitadora y líder en la formación de consultores a nivel nacional.</p>
+                            <div class="team-member-social">
+                                <a href="#" target="_blank" aria-label="LinkedIn de Maximina Vaquera Pedroza"><i class="ph ph-linkedin-logo"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member-card">
+                        <div class="team-member-img-wrapper">
+                            <img src="francisco-diaz.curso.jpg" alt="Foto de Francisco Jacobo Diaz Sepulveda, Socio Fundador de LSL" class="team-member-img">
+                        </div>
+                        <div class="team-member-overlay">
+                            <h3>Francisco Jacobo Diaz Sepulveda</h3>
+                            <p class="team-member-role">Socio Fundador</p>
+                            <p class="team-member-bio">Breve resumen sobre la experiencia, especialidad o la pasión que este fundador aporta al equipo y a los clientes de LSL.</p>
+                            <div class="team-member-social">
+                                <a href="#" target="_blank" aria-label="LinkedIn de Francisco Jacobo Diaz Sepulveda"><i class="ph ph-linkedin-logo"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member-card">
+                        <div class="team-member-img-wrapper">
+                             <img src="miembro-4.jpg" alt="Foto del cuarto socio fundador de LSL" class="team-member-img">
+                        </div>
+                        <div class="team-member-overlay">
+                            <h3>Nombre del Fundador 4</h3>
+                            <p class="team-member-role">Socio Fundador</p>
+                            <p class="team-member-bio">Breve resumen sobre la experiencia, especialidad o la pasión que este fundador aporta al equipo y a los clientes de LSL.</p>
+                            <div class="team-member-social">
+                                <a href="#" target="_blank" aria-label="LinkedIn de Nombre del Fundador 4"><i class="ph ph-linkedin-logo"></i></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <div class="section-divider"><a href="#" class="nav-logo">LSL <span>Lab</span></a></div>
 
         <section id="lead-magnet" class="lead-magnet-section reveal">
             <div class="container">
                 <div class="lead-magnet-grid">
                     <div class="lead-magnet-image">
-                        <img src="checklist-pyme.png" alt="Portada del Checklist para PyMEs">
+                        <img src="checklist-pyme.png" alt="Portada del Checklist gratuito para diagnosticar la salud de una PyME">
                     </div>
                     <div class="lead-magnet-text">
                         <h3>¿No estás listo para una llamada? Empieza aquí.</h3>
                         <p>Descarga nuestro "Checklist: 10 Puntos Clave para Diagnosticar la Salud de tu PyME" y obtén una visión clara de tus áreas de oportunidad hoy mismo.</p>
-                        <a href="enlace-a-tu-pdf.pdf" target="_blank" class="btn btn-primary">Descargar Gratis</a>
+                        <a href="diagnostico.html" class="btn btn-primary">Realizar Diagnóstico Gratis</a>
                     </div>
                 </div>
             </div>
         </section>
 
+        <div class="section-divider"><a href="#" class="nav-logo">LSL <span>Lab</span></a></div>
+        
         <section id="reservas" class="cta-section reveal">
             <div class="container">
                 <h2>¿Listo para trazar tu plan de crecimiento?</h2>
@@ -748,36 +748,119 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- CÓDIGO PARA ANIMACIÓN DE SCROLL ---
             const revealElements = document.querySelectorAll('.reveal');
             const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
+                entries.forEach(entry => { 
+                    if (entry.isIntersecting) { 
+                        entry.target.classList.add('active'); 
+                    } 
                 });
-            }, {
-                threshold: 0.1
-            });
-            revealElements.forEach(element => {
-                revealObserver.observe(element);
-            });
+            }, { threshold: 0.1 });
+            revealElements.forEach(element => { revealObserver.observe(element); });
 
+            // --- CÓDIGO PARA NAVBAR CON SCROLL ---
             const navbar = document.querySelector('.navbar');
             if (navbar) {
                 window.addEventListener('scroll', () => {
-                    if (window.scrollY > 50) {
-                        navbar.classList.add('scrolled');
-                    } else {
-                        navbar.classList.remove('scrolled');
+                    if (window.scrollY > 50) { 
+                        navbar.classList.add('scrolled'); 
+                    } else { 
+                        navbar.classList.remove('scrolled'); 
                     }
                 });
             }
 
-            // Ralentizar el video de la sección Soluciones
-            const solutionsVideo = document.querySelector('.solutions-bg-video');
-            if (solutionsVideo) {
-                solutionsVideo.playbackRate = 0.5; // 50% de la velocidad normal
+            // --- SCRIPT: ANIMACIÓN DE LÍNEA DE TIEMPO ---
+            const timeline = document.querySelector('.method-timeline');
+            if (timeline) {
+                window.addEventListener('scroll', () => {
+                    const { top, height } = timeline.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    const startPoint = windowHeight * 0.8;
+                    
+                    if (top < startPoint) {
+                        let progress = (startPoint - top) / (height - (windowHeight - startPoint));
+                        progress = Math.min(1, Math.max(0, progress));
+                        timeline.style.setProperty('--timeline-progress', progress);
+                    } else {
+                        timeline.style.setProperty('--timeline-progress', 0);
+                    }
+                });
             }
+
+            // --- CÓDIGO: LÓGICA PARA MENÚ MÓVIL (MODIFICADO) ---
+            const navToggle = document.querySelector('.mobile-nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            navToggle.addEventListener('click', () => {
+                const isVisible = navLinks.getAttribute('data-visible');
+                const icon = navToggle.querySelector('i'); // Selecciona el ícono
+
+                if (isVisible === "false" || !isVisible) {
+                    navLinks.setAttribute('data-visible', true);
+                    navToggle.setAttribute('aria-expanded', true);
+                    icon.classList.remove('ph-list'); // Quita ícono de lista
+                    icon.classList.add('ph-x');       // Añade ícono de 'X'
+                } else {
+                    navLinks.setAttribute('data-visible', false);
+                    navToggle.setAttribute('aria-expanded', false);
+                    icon.classList.remove('ph-x');      // Quita ícono de 'X'
+                    icon.classList.add('ph-list');    // Añade ícono de lista
+                }
+            });
+
+            // --- CÓDIGO: LÓGICA PARA ANIMACIONES DE TEXTO DINÁMICO ---
+            
+            function typeDeleteLoop(element, textArray, typeSpeed, deleteSpeed, pause) {
+                let textIndex = 0;
+                let charIndex = 0;
+                let isDeleting = false;
+
+                function animate() {
+                    const currentText = textArray[textIndex];
+                    if (isDeleting) {
+                        // Borrando
+                        charIndex--;
+                        element.textContent = currentText.substring(0, charIndex);
+                        if (charIndex === 0) {
+                            isDeleting = false;
+                            textIndex = (textIndex + 1) % textArray.length;
+                            setTimeout(animate, pause / 2);
+                        } else {
+                            setTimeout(animate, deleteSpeed);
+                        }
+                    } else {
+                        // Escribiendo
+                        charIndex++;
+                        element.textContent = currentText.substring(0, charIndex);
+                        if (charIndex === currentText.length) {
+                            isDeleting = true;
+                            setTimeout(animate, pause);
+                        } else {
+                            setTimeout(animate, typeSpeed);
+                        }
+                    }
+                }
+                animate();
+            }
+
+            // Animación para el texto superior (hero-accent-text)
+            const accentTextElement = document.querySelector('.hero-accent-text');
+            const accentTextArray = [
+                "CONSULTORÍA PARA PYMES EN LA LAGUNA",
+                "Metodologías Activas y Basadas en Proyectos",
+                "Para un aprendizaje práctico y resultados tangibles",
+                "Acompañamiento Estratégico Integral",
+                "Somos tus socios desde el diagnóstico hasta la implementación",
+                "Enfoque 100% en la Comarca Lagunera",
+                "Soluciones que entienden y se adaptan a la realidad de tu mercado"
+            ];
+            if (accentTextElement) {
+                typeDeleteLoop(accentTextElement, accentTextArray, 100, 50, 2000);
+            }
+
+            // El script que insertaba los divisores ha sido eliminado.
         });
     </script>
 </body>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico Interactivo de Salud Organizacional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    <style>
+        :root {
+            --color-primario: #8B4513; --color-primario-hover: #6a360f; --color-fondo: #f8f9fa; --color-tarjeta: #ffffff; --color-texto: #212529; --color-texto-secundario: #6c757d; --color-borde: #dee2e6; --color-hover: #e9ecef;
+            --resp-1: #feeadd; --resp-2: #fdd8b8; --resp-3: #fcc593; --resp-4: #fbb26d; --resp-5: #fa9f48;
+            --color-critico: #e74c3c; --color-oportunidad: #f1c40f; --color-saludable: #27ae60;
+        }
+
+        body { font-family: 'Poppins', sans-serif; background-color: var(--color-fondo); color: var(--color-texto); line-height: 1.6; }
+        #diagnostico-container { background-color: var(--color-tarjeta); padding: clamp(20px, 5vw, 40px); border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); max-width: 750px; width: 100%; margin: 20px auto; }
+        h2 { text-align: center; font-weight: 600; font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 10px; }
+        p { color: var(--color-texto-secundario); text-align: center; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        #intro-cuestionario { font-size: 1rem; color: var(--color-texto); background-color: #f8f9fa; border-left: 4px solid var(--color-primario); padding: 15px 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0; }
+        .campo-info { width: calc(100% - 24px); padding: 12px; margin-bottom: 15px; border: 1px solid var(--color-borde); border-radius: 8px; font-size: 16px; font-family: 'Poppins', sans-serif; }
+        .sticky-header { position: -webkit-sticky; position: sticky; top: 0; background-color: var(--color-tarjeta); z-index: 10; padding: 20px 0 15px 0; margin: 0 -40px; padding-left: 40px; padding-right: 40px; }
+        .pregunta { margin-bottom: 30px; padding: 25px; border-radius: 12px; border: 1px solid var(--color-borde); border-left: 4px solid var(--color-borde); transition: border-left-color 0.4s ease; }
+        .pregunta-respondida { border-left-color: var(--color-primario); }
+        .pregunta-texto { font-size: 1.1rem; font-weight: 600; color: var(--color-texto); text-align: left; margin: 0 0 20px 0; }
+        .opciones-container { display: flex; justify-content: space-between; align-items: center; }
+        .opcion { position: relative; }
+        .opcion input[type="radio"] { opacity: 0; position: fixed; width: 0; }
+        .opcion label { position: relative; display: flex; justify-content: center; align-items: center; width: 42px; height: 42px; border-radius: 50%; background-color: var(--color-tarjeta); color: var(--color-texto-secundario); font-weight: 600; font-size: 16px; cursor: pointer; border: 2px solid var(--color-borde); transition: all 0.3s ease; }
+        .opcion label:hover { background-color: var(--color-hover); border-color: var(--color-texto-secundario); }
+        .label-escala { font-size: 0.95rem; color: var(--color-texto-secundario); font-weight: 500; transition: all 0.3s ease-out; }
+        .label-escala:hover { color: var(--color-primario); transform: scale(1.03); }
+        .opcion label::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; transform: scale(0); transition: transform 0.4s ease-out; z-index: 1; }
+        .opcion input[type="radio"]:checked + label { color: var(--color-texto-secundario); border-color: transparent; }
+        .opcion input[value="4"]:checked + label, .opcion input[value="5"]:checked + label { color: white; }
+        .opcion label span { position: relative; z-index: 2; }
+        .opcion input[type="radio"]:checked + label::before { transform: scale(1); }
+        .opcion input[value="1"]:checked + label::before { background-color: var(--resp-1); } .opcion input[value="2"]:checked + label::before { background-color: var(--resp-2); } .opcion input[value="3"]:checked + label::before { background-color: var(--resp-3); } .opcion input[value="4"]:checked + label::before { background-color: var(--resp-4); } .opcion input[value="5"]:checked + label::before { background-color: var(--resp-5); }
+        button { display: block; width: 100%; padding: 15px; background-color: var(--color-primario); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: background-color 0.3s, transform 0.2s; }
+        button:hover { background-color: var(--color-primario-hover); transform: translateY(-2px); }
+        .progress-bar { width: 100%; height: 12px; background-color: var(--color-hover); border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
+        .progress-bar-fill { width: 0%; height: 100%; background-color: var(--color-primario); border-radius: 6px; transition: width 0.4s ease-out; }
+        #resultado { padding: 30px; text-align: center; animation: fadeIn 0.8s ease-out forwards; }
+        .gauge-container { position: relative; width: 180px; height: 180px; margin: 0 auto 20px auto; }
+        .gauge-bg { width: 100%; height: 100%; border-radius: 50%; background: var(--color-hover); }
+        .gauge-fill { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(var(--gauge-color) calc(var(--score-percent, 0) * 1%), var(--color-hover) 0); transition: all 1s ease-in-out; }
+        .gauge-cover { position: absolute; top: 15px; left: 15px; width: 150px; height: 150px; border-radius: 50%; background: var(--color-tarjeta); display: flex; justify-content: center; align-items: center; }
+        
+        /* Estilos para el ícono SVG genérico */
+        .gauge-icon {
+            width: 70px; /* Tamaño del ícono */
+            height: 70px;
+            stroke: var(--color-primario); /* Color del trazo */
+            stroke-width: 2;
+            fill: none; /* No rellenar el ícono */
+        }
+        
+        #resultado-titulo, #resultado-texto, .oportunidades-container, #cta-button { opacity: 0; transform: translateY(20px); animation: slideInUpFadeIn 0.7s ease-out forwards; }
+        #resultado-titulo { animation-delay: 0.2s; }
+        #resultado-texto { animation-delay: 0.4s; }
+        .oportunidades-container { animation-delay: 0.6s; }
+        #cta-button { animation-delay: 0.8s; }
+        .oportunidades-container h3, .oportunidades-container ul, .conexion-servicios { opacity: 0; transform: translateY(10px); animation: slideInUpFadeIn 0.7s ease-out forwards; }
+        .oportunidades-container h3 { animation-delay: 0.7s; }
+        .oportunidades-container ul { animation-delay: 0.8s; }
+        .conexion-servicios { animation-delay: 0.9s; }
+        #resultado-titulo { font-size: 1.8rem; margin-bottom: 10px; font-weight: 700; }
+        #resultado-texto { font-size: 1.1rem; color: var(--color-texto); max-width: 550px; }
+        .oportunidades-container { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--color-borde); }
+        .oportunidades-container h3 { font-weight: 600; color: var(--color-texto); }
+        .oportunidades-container ul { list-style-type: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+        .oportunidades-container li { background-color: var(--color-hover); padding: 10px 20px; border-radius: 20px; font-weight: 600; color: var(--color-primario); display: inline-flex; align-items: center; gap: 8px; opacity: 0; transform: translateY(10px); animation: slideInUpFadeIn 0.7s ease-out forwards; animation-delay: 1s; }
+        .oportunidades-container li:nth-child(2) { animation-delay: 1.1s; }
+        .oportunidades-container li svg { width: 16px; height: 16px; stroke: var(--color-primario); }
+        .conexion-servicios { font-size: 1rem; color: var(--color-texto-secundario); margin-top: 25px; }
+        #cta-button { margin-top: 30px; padding: 18px; font-size: 1.1rem; }
+        #calendly-container { min-height: 700px; margin-top: 20px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInUpFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="diagnostico-container">
+        <div id="info-form">
+            <h2>Diagnóstico de Salud Organizacional</h2>
+            <p>Descubre en 2 minutos las áreas de oportunidad de tu PyME con este diagnóstico interactivo.</p>
+            <input type="text" id="nombre" placeholder="Tu Nombre Completo" class="campo-info" required>
+            <input type="email" id="email" placeholder="Tu Correo Electrónico" class="campo-info" required>
+            <button id="btn-empezar">Comenzar Diagnóstico</button>
+        </div>
+
+        <form id="quiz-form" style="display:none;"></form>
+        
+        <div id="resultado" style="display:none;"></div>
+    </div>
+
+    <script>
+        const temas = [
+            "Visión y Propósito", "Liderazgo y Cultura", "Toma de Decisiones", "Responsabilidad", "Comunicación",
+            "Colaboración", "Enfoque en el Cliente", "Clima Laboral", "Adaptabilidad", "Mejora Continua"
+        ];
+        const preguntas = [
+            "Existe una visión de futuro clara, inspiradora y compartida por todos en la organización.",
+            "Nuestros líderes inspiran confianza y fomentan activamente el desarrollo de sus equipos.",
+            "La toma de decisiones en nuestra empresa es ágil, oportuna y nos permite aprovechar las oportunidades.",
+            "Las personas asumen plena responsabilidad de sus compromisos, cumplen sus promesas y se enfocan en resultados.",
+            "Nuestras reuniones son productivas, enfocadas en soluciones y generan compromisos claros y accionables.",
+            "Existe un alto nivel de colaboración, escucha y empatía entre las diferentes áreas y equipos.",
+            "Todas nuestras actividades y decisiones están genuinamente orientadas a crear valor para nuestros clientes.",
+            "El ambiente de trabajo es positivo, enérgico y el bienestar de las personas es una prioridad.",
+            "Somos una organización flexible, que abraza las nuevas ideas y se adapta proactivamente a los cambios.",
+            "Evaluamos nuestro desempeño de forma honesta y constante para aprender de los errores y capitalizar los éxitos."
+        ];
+
+        const infoForm = document.getElementById('info-form');
+        const quizForm = document.getElementById('quiz-form');
+        const resultadoDiv = document.getElementById('resultado');
+        const btnEmpezar = document.getElementById('btn-empezar');
+        
+        function construirCuestionario() {
+            quizForm.innerHTML = `
+                <div class="sticky-header">
+                    <h2 style="margin-bottom: 15px;">Evalúa tu Organización</h2>
+                    <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+                </div>
+                <p id="intro-cuestionario">Este diagnóstico consta de 10 afirmaciones sobre las prácticas y cultura de tu organización. Responde honestamente para obtener un reflejo fiel de tu realidad actual.</p>
+                <div id="preguntas-container"></div>
+                <button type="submit">Calcular y Ver Resultados</button>
+            `;
+            let preguntasHTML = '';
+            preguntas.forEach((texto, index) => {
+                preguntasHTML += `
+                    <div class="pregunta" data-pregunta-index="${index}">
+                        <p class="pregunta-texto">${index + 1}. ${texto}</p>
+                        <div class="opciones-container">
+                            <span class="label-escala">En Desacuerdo</span>
+                            <div class="opcion"><input type="radio" name="p${index}" value="1" id="p${index}v1"><label for="p${index}v1"><span>1</span></label></div>
+                            <div class="opcion"><input type="radio" name="p${index}" value="2" id="p${index}v2"><label for="p${index}v2"><span>2</span></label></div>
+                            <div class="opcion"><input type="radio" name="p${index}" value="3" id="p${index}v3"><label for="p${index}v3"><span>3</span></label></div>
+                            <div class="opcion"><input type="radio" name="p${index}" value="4" id="p${index}v4"><label for="p${index}v4"><span>4</span></label></div>
+                            <div class="opcion"><input type="radio" name="p${index}" value="5" id="p${index}v5"><label for="p${index}v5"><span>5</span></label></div>
+                            <span class="label-escala">De Acuerdo</span>
+                        </div>
+                    </div>`;
+            });
+            quizForm.querySelector('#preguntas-container').innerHTML = preguntasHTML;
+        }
+
+        function mostrarResultado(respuestas) {
+            const puntuacionTotal = respuestas.reduce((a, b) => a + b, 0);
+            const nombreUsuario = document.getElementById('nombre').value.split(' ')[0] || "Tu";
+            
+            // ÍCONO SVG GENÉRICO INTEGRADO
+            const logoHtml = `
+                <svg class="gauge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                    <line x1="12" y1="22" x2="12" y2="17"></line>
+                </svg>
+            `;
+
+            let categoria, texto, color;
+            if (puntuacionTotal <= 25) {
+                categoria = 'Zona de Alerta Crítica';
+                texto = `${nombreUsuario}, este diagnóstico indica que tu organización tiene áreas cruciales que necesitan atención inmediata. Es un momento clave para evaluar y reconfigurar estrategias.`;
+                color = 'var(--color-critico)';
+            } else if (puntuacionTotal <= 40) {
+                categoria = 'Área de Oportunidad';
+                texto = `${nombreUsuario}, tu organización es sólida, pero hay oportunidades claras para potenciar su rendimiento y crecimiento. Identifiquemos juntos esas palancas.`;
+                color = 'var(--color-oportunidad)';
+            } else {
+                categoria = 'Cultura Saludable';
+                texto = `¡Felicidades ${nombreUsuario}! Tu organización muestra una salud robusta. El siguiente paso es consolidar esta fortaleza e innovar para mantener tu liderazgo.`;
+                color = 'var(--color-saludable)';
+            }
+
+            let respuestasConIndices = respuestas.map((score, index) => ({ score, index }));
+            respuestasConIndices.sort((a, b) => a.score - b.score);
+            const iconOportunidadLi = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>`;
+            
+            const lslTemas = [
+                "Claridad de Propósito", "Fomento del Liderazgo", "Agilidad en Decisiones", "Empoderamiento y Rendición de Cuentas", "Conexión Interna Efectiva", "Sinergia Colaborativa", "Experiencia del Cliente", "Ambiente de Bienestar", "Innovación y Adaptación", "Ciclo de Mejora Continua"
+            ];
+
+            let areasBajasHTML = `
+                <h3>Tus Principales Puntos de Enfoque:</h3>
+                <ul>
+                    <li>${iconOportunidadLi}${lslTemas[respuestasConIndices[0].index]}</li>
+                    <li>${iconOportunidadLi}${lslTemas[respuestasConIndices[1].index]}</li>
+                </ul>
+                <p class="conexion-servicios">En <strong>Learning and Solutions LAB</strong>, nuestra misión es acompañarte en estos retos. Diseñamos estrategias personalizadas para transformar estos puntos en auténticas fortalezas que impulsan el crecimiento y la sostenibilidad en la Comarca Lagunera.</p>
+            `;
+
+            resultadoDiv.innerHTML = `
+                <div class="gauge-container">
+                    <div class="gauge-bg"></div>
+                    <div class="gauge-fill" style="--gauge-color: ${color};"></div>
+                    <div class="gauge-cover">
+                        ${logoHtml}
+                    </div>
+                </div>
+                <h2 id="resultado-titulo" style="color: ${color};">${categoria}</h2>
+                <p id="resultado-texto">${texto}</p>
+                <div class="oportunidades-container">${areasBajasHTML}</div>
+                <button id="cta-button">Agenda una Sesión de Retroalimentación</button>
+                <div id="calendly-container" style="display: none;"></div>
+            `;
+
+            setTimeout(() => {
+                const gaugeFill = resultadoDiv.querySelector('.gauge-fill');
+                gaugeFill.style.setProperty('--score-percent', (puntuacionTotal / 50) * 100);
+            }, 100);
+
+            resultadoDiv.querySelector('#cta-button').addEventListener('click', function() {
+                this.style.display = 'none';
+                const calendlyContainer = document.getElementById('calendly-container');
+                calendlyContainer.style.display = 'block';
+                
+                // ===================================================================
+                // PASO FINAL: Reemplaza 'TU_USUARIO' con tu usuario real de Calendly
+                // ===================================================================
+                Calendly.initInlineWidget({
+                    url: 'https://calendly.com/TU_USUARIO', 
+                    parentElement: calendlyContainer,
+                    prefill: {
+                        name: document.getElementById('nombre').value,
+                        email: document.getElementById('email').value
+                    }
+                });
+            });
+
+            resultadoDiv.style.display = 'block';
+            setTimeout(() => {
+                resultadoDiv.classList.add('show-elements');
+            }, 150);
+        }
+        
+        btnEmpezar.addEventListener('click', function() {
+            if (document.getElementById('nombre').value.trim() && document.getElementById('email').value.trim().includes('@')) {
+                infoForm.style.display = 'none';
+                quizForm.style.display = 'block';
+            } else { alert('Por favor, completa tu nombre y un correo válido para comenzar.'); }
+        });
+        
+        construirCuestionario();
+        
+        const preguntasContainer = quizForm.querySelector('#preguntas-container');
+        const progressBarFill = quizForm.querySelector('.progress-bar-fill');
+
+        preguntasContainer.addEventListener('change', (e) => {
+            if (e.target.type === 'radio') {
+                e.target.closest('.pregunta').classList.add('pregunta-respondida');
+                const respondidas = quizForm.querySelectorAll('input[type="radio"]:checked').length;
+                progressBarFill.style.width = `${(respondidas / preguntas.length) * 100}%`;
+            }
+        });
+
+        quizForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const respondidas = quizForm.querySelectorAll('input[type="radio"]:checked').length;
+            if (respondidas < preguntas.length) { alert("Por favor, responde todas las preguntas para continuar."); return; }
+
+            let respuestas = [];
+            for (let i = 0; i < preguntas.length; i++) {
+                respuestas.push(parseInt(quizForm.querySelector(`input[name="p${i}"]:checked`).value));
+            }
+
+            mostrarResultado(respuestas);
+            quizForm.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
